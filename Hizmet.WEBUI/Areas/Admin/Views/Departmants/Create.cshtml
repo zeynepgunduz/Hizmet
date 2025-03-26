@@ -1,0 +1,50 @@
+﻿@model Hizmet.Core.Entities.Departmant
+
+@{
+    ViewData["Title"] = "Departman Ekle";
+}
+
+<h3 class="text-primary">Yeni Departman</h3>
+ 
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"><strong> @Html.DisplayNameFor(model => model.Name)</strong></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsActive" /><strong> @Html.DisplayNameFor(model => model.IsActive)</strong>
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsTopDepartmant" /><strong> @Html.DisplayNameFor(model => model.IsTopDepartmant)</strong>
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParentId" class="control-label"><strong> @Html.DisplayNameFor(model => model.ParentId)</strong></label>
+      
+                <select asp-for="ParentId" class="form-select" asp-items="ViewBag.Departmants">
+					<option value="0">Ana Departman</option>
+                </select>
+                <span asp-validation-for="ParentId" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <input type="submit" value="Kaydet" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Listeye Dön</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
