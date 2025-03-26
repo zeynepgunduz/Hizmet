@@ -1,20 +1,18 @@
 ﻿@model Hizmet.Core.Entities.Employee
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Çalışan Düzenle";
 }
 
-<h1>Edit</h1>
-
-<h4>Employee</h4>
+ 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" onsubmit="return validatePassword()">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                    <input class="form-check-input" asp-for="IsActive" id="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
                 </label>
             </div>
             <div class="form-group">
@@ -33,6 +31,9 @@
                 <span asp-validation-for="DepartmantId" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Password" />
+            <input type="hidden" asp-for="CreateDate" />
+
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -48,11 +49,24 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
+@*             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
+            </div> *@
+
+            <!-- Şifreyi değiştirmek isteyenler için yeni alan -->
+            <div class="form-group">
+                <label for="NewPassword" class="text-warning">Yeni Şifre</label>
+                <input type="password" name="NewPassword" id="NewPassword" class="form-control" />
             </div>
+            <div class="form-group">
+                <label for="NewPassword2" class="text-warning">Yeni Şifre (tekrar)</label>
+                <input type="password" name="NewPassword2" id="NewPassword2" class="form-control" />
+            </div>
+
+            <div id="error-message" style="color: red; display: none;">Şifreler eşleşmiyor!</div>
+
             <div class="form-group">
                 <label asp-for="Phone" class="control-label"></label>
                 <input asp-for="Phone" class="form-control" />
@@ -65,20 +79,56 @@
             </div>
             <div class="form-group">
                 <label asp-for="BirthDate" class="control-label"></label>
-                <input asp-for="BirthDate" class="form-control" />
+                <input type="date" asp-for="BirthDate" class="form-control" />
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Kaydet" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Listeye Dön</a>
+
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+
+
+<script>
+    function validatePassword() {
+        var password = document.getElementById("NewPassword").value;
+        var confirmPassword = document.getElementById("NewPassword2").value;
+        var errorMessage = document.getElementById("error-message");
+
+        if (password !== confirmPassword) {
+            errorMessage.style.display = "block"; // Hata mesajını göster
+            return false; // Formu göndermeyi engelle
+        } else {
+            errorMessage.style.display = "none"; // Hata mesajını gizle
+            return true; // Formu gönder
+        }
+    }
+
+    // Çıkış tarihi alanının değiştiğini dinle
+     document.getElementById("TerminationDate").addEventListener("change", function() {
+         var isActiveCheckbox = document.getElementById("IsActive");
+         if (this.value) { // Eğer çıkış tarihi doluysa
+             alert("Çalışanın işten çıkış tarihi belirlendi!"); // Uyarı ver
+             isActiveCheckbox.checked = false; // Aktif mi? alanını pasif yap
+             isActiveCheckbox.disabled = true; // Aktif mi? alanını devre dışı bırak
+         } else {
+             isActiveCheckbox.disabled = false; // Çıkış tarihi boşsa, Aktif mi? alanını etkinleştir
+         }
+     });
+         // Sayfa yüklendiğinde kontrol
+    window.onload = function() {
+        var terminationDateInput = document.getElementById("TerminationDate");
+        var isActiveCheckbox = document.getElementById("IsActive");
+        if (terminationDateInput.value) { // Eğer çıkış tarihi doluysa
+            isActiveCheckbox.disabled = true; // Aktif mi? alanını devre dışı bırak
+        }
+    };
+
+</script>

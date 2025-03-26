@@ -23,7 +23,7 @@ namespace Hizmet.WEBUI.Areas.Admin.Controllers
         // GET: Admin/Employees
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Employees.Include(e => e.Departmant);
+            var appDbContext = _context.Employees.Include(e => e.Departmant);//eager loading kullanıldı
             return View(await appDbContext.ToListAsync());
         }
 

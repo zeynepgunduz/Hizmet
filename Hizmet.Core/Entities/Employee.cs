@@ -9,11 +9,14 @@ namespace Hizmet.Core.Entities
 {
     public class Employee:Person 
     {
+        [DisplayName("Aktif Mi?")]
         public bool IsActive { get; set; }
         [DisplayName("İşe Giriş Tarihi")]
         public DateTime Startdate { get; set; }
         [DisplayName("İşten Çıkış Tarihi")]
+
         public DateTime? TerminationDate { get; set; }
+        [DisplayName("Departman")]
         public int DepartmantId { get; set; }
         public  Departmant? Departmant { get; set; }
         public List <Service>? Services { get; set; }

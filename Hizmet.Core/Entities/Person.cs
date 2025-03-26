@@ -25,6 +25,7 @@ namespace Hizmet.Core.Entities
         [Display(Name = "Adres")]
         public string? Address { get; set; }
         [Display(Name = "Doğum Tarihi")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? BirthDate { get; set; }
         [ScaffoldColumn(false)]
         [Display(Name = "Oluşturulma Tarihi")]
